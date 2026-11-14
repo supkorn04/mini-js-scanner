@@ -47,14 +47,64 @@ video {
     color: #0284c7;
     word-break: break-all;
 }
+.result-meta {
+    margin-top: 0.5rem;
+    color: #64748b;
+    font-size: 0.9rem;
+}
+.result-submeta {
+    margin-top: 0.25rem;
+    color: #94a3b8;
+    font-size: 0.8rem;
+}
 button {
-    padding: 10px 24px;
+    background: #0284c7;
+    color: #fff;
+    border: none;
+    padding: 0.75rem 1.5rem;
     font-size: 1rem;
     font-weight: 600;
-    color: #fff;
-    background: #0284c7;
-    border: none;
     border-radius: 8px;
     cursor: pointer;
+    transition: background 0.2s;
 }
-button:active { background: #0369a1; }
+button:hover {
+    background: #0369a1;
+}
+
+/* Diagnostic HUD Styles */
+.diagnostic-hud {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background: #0f172a;
+    color: #38bdf8;
+    border-radius: 8px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.8rem;
+    line-height: 1.6;
+    text-align: left;
+}
+.hud-header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #1e293b;
+    padding-bottom: 4px;
+    margin-bottom: 6px;
+}
+.hud-title {
+    font-weight: 700;
+    color: #e2e8f0;
+}
+.hud-status {
+    color: #64748b;
+    font-weight: 600;
+}
+.hud-status.status-idle { color: #64748b; }
+.hud-status.status-starting { color: #eab308; }
+.hud-status.status-scanning { color: #38bdf8; }
+.hud-status.status-matched { color: #22c55e; }
+.hud-status.status-error { color: #ef4444; }
+
+.hud-val {
+    color: #f8fafc;
+}
