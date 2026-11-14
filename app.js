@@ -10,7 +10,6 @@
 // ====================================================================
 const SCANNER_CONFIG = {
     allowedFormats: [
-        ZXing.BarcodeFormat.QR_CODE,
         ZXing.BarcodeFormat.CODE_128
     ],
     constraints: {
