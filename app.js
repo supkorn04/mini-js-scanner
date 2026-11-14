@@ -1,7 +1,7 @@
 /**
  * ====================================================================
  * Warehouse Barcode & QR Scanner Engine (app.js)
- * Supported Formats: QR Code (2D) & Code 128 (1D)
+ * Supported Formats: QR Code (2D), Code 128 (1D), EAN-13, etc.
  * ====================================================================
  */
 
@@ -10,7 +10,10 @@
 // ====================================================================
 const SCANNER_CONFIG = {
     allowedFormats: [
-        ZXing.BarcodeFormat.CODE_128
+        ZXing.BarcodeFormat.CODE_128,
+        ZXing.BarcodeFormat.QR_CODE,
+        ZXing.BarcodeFormat.EAN_13,
+        ZXing.BarcodeFormat.CODE_39
     ],
     constraints: {
         video: {
@@ -26,9 +29,12 @@ hints.set(
     ZXing.DecodeHintType.POSSIBLE_FORMATS,
     SCANNER_CONFIG.allowedFormats
 );
+// Try harder flag helps decode 1D barcodes with poor contrast/angles
+hints.set(ZXing.DecodeHintType.TRY_HARDER, true);
 
-// Instantiate the reader engine once
-const codeReader = new ZXing.BrowserMultiFormatReader(hints);
+// Instantiate reader and assign hints
+const codeReader = new ZXing.BrowserMultiFormatReader();
+codeReader.hints = hints;
 
 // ====================================================================
 // 2. Setting DOM objects and state
@@ -53,7 +59,7 @@ function stopScanner() {
 // 4. Main toggle and decoding loops
 // ====================================================================
 toggleBtn.addEventListener('click', async () => {
-    // BRANCH A: Camera is opening
+    // BRANCH A: Camera is currently running -> stop
     if (isScanning) {
         stopScanner();
         return;
@@ -72,12 +78,13 @@ toggleBtn.addEventListener('click', async () => {
                 if (result) {
                     resultText.textContent = result.getText();
                     resultFormat.textContent = result.getBarcodeFormat();
+                    if (navigator.vibrate) navigator.vibrate(100);
                     stopScanner();
                 }
 
                 // Ignore expected per-frame empty read exceptions; log genuine anomalies
                 if (err && !(err instanceof ZXing.NotFoundException)) {
-                    console.error('Frame decode error:', err);
+                    console.warn('Frame decode warning:', err);
                 }
             }
         );
